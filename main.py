@@ -8,6 +8,7 @@ import cv2
 import pyqtgraph as pg
 import numpy as np
 import harris
+import time
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -24,6 +25,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
 
     def harris_operator(self):
+        t0= time.process_time()
         if self.ui.comboBox.currentIndex() == 1:
             
             #Read Image
@@ -39,12 +41,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # Corner detection
             harris_output = harris.HarrisCornerDetection(firstimage)
 
-            #Parameter setting
-            CornerStrengthThreshold = 600000
+            #Parameter setting depending on the image
+            CornerStrengthThreshold = 5
 
             # Plot detected corners on image
             radius = 1
-            color = (0, 255, 0)
+            color = (255, 255, 255) #white
             thickness = 1
             PointList = []
 
@@ -65,7 +67,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             # Point is expressed in x, y which is col, row
                             cv2.circle(bgr, (col, row), radius, color, thickness)
                             PointList.append((row, col))
-
+        
+        t1 = time.process_time() - t0
+        print("Computation time: ", t1)
         self.my_img = pg.ImageItem(harris_output)
         self.ui.image.addItem(self.my_img)
         

@@ -24,3 +24,6 @@
 
 ## Ouptut 
 <img  src="Output_harris.png">
+
+### Computation time for detecting these points:  
+29.53090317 sec
