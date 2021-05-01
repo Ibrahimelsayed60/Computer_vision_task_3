@@ -9,6 +9,8 @@ import pyqtgraph as pg
 import numpy as np
 import harris
 import time
+import pyqtgraph as pg
+import pysift
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -19,9 +21,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         path = 'squares.png'
         self.img = cv2.imread(path, 0)
+        self.image1 =  cv2.rotate(cv2.imread('box.png',0),cv2.ROTATE_90_CLOCKWISE)
+        self.image2 = cv2.rotate(cv2.imread('box_in_scene.png',0),cv2.ROTATE_90_CLOCKWISE)
         
         self.ui.original.setPixmap(QPixmap(path))
         self.ui.comboBox.currentIndexChanged[int].connect(self.harris_operator)
+
+        self.ui.widget_2.getPlotItem().hideAxis('bottom')
+        self.ui.widget_2.getPlotItem().hideAxis('left')
+        self.ui.widget_3.getPlotItem().hideAxis('bottom')
+        self.ui.widget_3.getPlotItem().hideAxis('left')
+
+        self.ui.pushButton_2.clicked.connect(self.featured_result_image)
+        self.ui.pushButton_1.clicked.connect(self.matching_image)
 
 
     def harris_operator(self):
@@ -73,6 +85,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.my_img = pg.ImageItem(harris_output)
         self.ui.image.addItem(self.my_img)
         
+
+    def featured_result_image(self):
+        newimage = pysift.featured_image(self.image1)
+        img = pg.ImageItem(newimage)
+        self.ui.widget_3.addItem(img)
+
+    def matching_image(self):
+        newimage = pysift.SIFT_matching_keypoint(self.image1,self.image2)
+        img = pg.ImageItem(newimage)
+        self.ui.widget_2.addItem(img)
+
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
