@@ -35,13 +35,9 @@ def HarrisCornerDetection(image):
     ImgX = GetSobel(image, SobelX, w, h)
     ImgY = GetSobel(image, SobelY, w, h)
 
-    # # Eliminate the negative values
-    # There are multiple ways this can be done
-    # 1. Off setting with a positive value (commented out below)
-    # 2. Setting negative values to Zero (commented out)
-    # 3. Multiply by -1 (implemented below, found most reliable method)
-    # ImgX += 128.0
-    # ImgY += 128.0
+    ## Eliminate the negative values
+    # Multiply by -1 
+    
     for ind1 in range(w):
         for ind2 in range(h):
             if ImgY[ind1][ind2] < 0:
@@ -51,26 +47,18 @@ def HarrisCornerDetection(image):
                 ImgX[ind1][ind2] *= -1
                 # ImgX[ind1][ind2] = 0
 
-    # # Display the output results after Sobel operations
-    # cv2.imshow("SobelX", ImgX)
-    # cv2.imshow("SobelY", ImgY)
-
     ImgX_2 = np.square(ImgX)
     ImgY_2 = np.square(ImgY)
-
     ImgXY = np.multiply(ImgX, ImgY)
     ImgYX = np.multiply(ImgY, ImgX)
 
     #Use Gaussian Blur
     Sigma = 1.4
     kernelsize = (3, 3)
-
     ImgX_2 = cv2.GaussianBlur(ImgX_2, kernelsize, Sigma)
     ImgY_2 = cv2.GaussianBlur(ImgY_2, kernelsize, Sigma)
     ImgXY = cv2.GaussianBlur(ImgXY, kernelsize, Sigma)
     ImgYX = cv2.GaussianBlur(ImgYX, kernelsize, Sigma)
-    # print(ImgXY.shape, ImgYX.shape)
-
     alpha = 0.06
     R = np.zeros((w, h), np.float32)
     # For every pixel find the corner strength

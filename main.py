@@ -39,23 +39,20 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # Corner detection
             harris_output = harris.HarrisCornerDetection(firstimage)
 
-            #Parameter
-
-            CornerStrengthThreshold = 500
+            #Parameter setting
+            CornerStrengthThreshold = 600000
 
             # Plot detected corners on image
             radius = 1
             color = (0, 255, 0)
             thickness = 1
-
             PointList = []
+
             # Look for Corner strengths above the threshold
             for row in range(w):
                 for col in range(h):
                     if harris_output[row][col] > CornerStrengthThreshold:
-                        # print(R[row][col])
                         max = harris_output[row][col]
-
                         # Local non-maxima suppression
                         skip = False
                         for nrow in range(5):
@@ -64,7 +61,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                     if harris_output[row + nrow - 2][col + ncol - 2] > max:
                                         skip = True
                                         break
-
                         if not skip:
                             # Point is expressed in x, y which is col, row
                             cv2.circle(bgr, (col, row), radius, color, thickness)
