@@ -52,8 +52,9 @@ class Ui_MainWindow(object):
         self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_5.setObjectName("frame_5")
-        self.image = QtWidgets.QWidget(self.frame_5)
-        self.image.setGeometry(QtCore.QRect(9, 10, 351, 281))
+        self.image = PlotWidget(self.frame_5)
+        self.image.setGeometry(QtCore.QRect(4, 10, 361, 281))
+        self.image.setMaximumSize(QtCore.QSize(475, 16777215))
         self.image.setObjectName("image")
         self.horizontalLayout_4.addWidget(self.frame_5)
         self.layoutWidget1 = QtWidgets.QWidget(self.frame_6)
@@ -111,6 +112,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Harris operator"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "SIFT"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "SSD"))
+from pyqtgraph import PlotWidget
 
 
 if __name__ == "__main__":

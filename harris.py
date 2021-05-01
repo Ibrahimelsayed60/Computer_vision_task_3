@@ -1,153 +1,81 @@
-import cv2, math
 import numpy as np
-import matplotlib.pyplot as plt
+import cv2
+import glob
 
-def load_image(path):
-  image = cv2.imread(path)
-  grayscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-  return grayscale_image
 
-def apply_kernel(image, kernel):
-  kernel_size = kernel.shape[0]
+# Kernel operation using input operator of size 3*3
+def GetSobel(image, Sobel, width, height):
+    # Initialize the matrix
+    I_d = np.zeros((width, height), np.float32)
 
-  padding_amount = int((kernel_size - 1) / 2)
-  rows = image.shape[0] + 2 * padding_amount
-  cols = image.shape[1] + 2 * padding_amount
-  channels = image.shape[2]
-  padded_image_placeholder = np.zeros((rows, cols, channels))
-  padded_image_placeholder[padding_amount:rows-padding_amount, padding_amount:cols-padding_amount, :] = image
+    # For every pixel in the image
+    for rows in range(width):
+        for cols in range(height):
+            # Run the Sobel kernel for each pixel
+            if rows >= 1 or rows <= width-2 and cols >= 1 or cols <= height-2:
+                for ind in range(3):
+                    for ite in range(3):
+                        I_d[rows][cols] += Sobel[ind][ite] * image[rows - ind - 1][cols - ite - 1]
+            else:
+                I_d[rows][cols] = image[rows][cols]
 
-  filtered_image = np.zeros(image.shape)
+    return I_d
 
-  for each_channel in range(channels):
-    padded_2d_image = padded_image_placeholder[:,:,each_channel]
-    filtered_2d_image = filtered_image[:,:,each_channel]
-    width = padded_2d_image.shape[0]
-    height = padded_2d_image.shape[1]
-    for i in range(width-kernel_size+1):
-      for j in range(height-kernel_size+1):
-        current_block = padded_2d_image[i:i+kernel_size, j:j+kernel_size]
-        convoluted_value = np.sum(current_block * kernel)
-        filtered_2d_image[i][j] = convoluted_value
-    filtered_image[:,:,each_channel] = filtered_2d_image
 
-  return filtered_image
+# Method implements the Harris Corner Detection algorithm
+def HarrisCornerDetection(image):
 
-def get_gaussian_filter(kernel_size, sigma):
-    kernel = np.zeros((kernel_size, kernel_size))
-    denom = 2 * np.pi * sigma * sigma
-    samples = np.arange(-int(kernel_size/2), int(kernel_size/2) + 1)
+    # The two Sobel operators - for x and y direction
+    SobelX = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+    SobelY = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
-    for i in range(len(samples)):
-      for j in range(len(samples)):
-        x = samples[i]
-        y = samples[j]
-        num = np.exp(-1*(((x*x) + (y*y)) / (2*sigma*sigma)))
-        val = num / math.sqrt(denom)
-        kernel[i][kernel_size - j - 1] = val
-    kernel = kernel / kernel.sum()
-    
-    return kernel
+    w, h = image.shape
 
-def apply_sobelX_kernel(image):
-  kernel = (1/8) * np.array([[-1,0,1],[-2,0,2],[-1,0,1]])
-  filtered_image = apply_kernel(image, kernel)
-  return np.array(filtered_image)
+    # X and Y derivative of image using Sobel operator
+    ImgX = GetSobel(image, SobelX, w, h)
+    ImgY = GetSobel(image, SobelY, w, h)
 
-def apply_sobelY_kernel(image):
-  kernel = (1/8) * np.array([[1,2,1],[0,0,0],[-1,-2,-1]])
-  filtered_image = apply_kernel(image, kernel)
-  return np.array(filtered_image)
+    # # Eliminate the negative values
+    # There are multiple ways this can be done
+    # 1. Off setting with a positive value (commented out below)
+    # 2. Setting negative values to Zero (commented out)
+    # 3. Multiply by -1 (implemented below, found most reliable method)
+    # ImgX += 128.0
+    # ImgY += 128.0
+    for ind1 in range(w):
+        for ind2 in range(h):
+            if ImgY[ind1][ind2] < 0:
+                ImgY[ind1][ind2] *= -1
+                # ImgY[ind1][ind2] = 0
+            if ImgX[ind1][ind2] < 0:
+                ImgX[ind1][ind2] *= -1
+                # ImgX[ind1][ind2] = 0
 
-def apply_gaussian(image, kernel_size, sigma):
-  kernel = get_gaussian_filter(kernel_size, sigma)
-  filtered_image = apply_kernel(image, kernel)
-  return np.array(filtered_image, dtype=np.uint8)
+    # # Display the output results after Sobel operations
+    # cv2.imshow("SobelX", ImgX)
+    # cv2.imshow("SobelY", ImgY)
 
-def get_covariance_matrix(image):
-  sobelX = apply_sobelX_kernel(image)
-  sobelY = apply_sobelY_kernel(image)
+    ImgX_2 = np.square(ImgX)
+    ImgY_2 = np.square(ImgY)
 
-  Ixx = sobelX * sobelX
-  Ixy = sobelX * sobelY
-  Iyx = sobelY * sobelX
-  Iyy = sobelY * sobelY
+    ImgXY = np.multiply(ImgX, ImgY)
+    ImgYX = np.multiply(ImgY, ImgX)
 
-  return Ixx, Ixy, Iyx, Iyy
+    #Use Gaussian Blur
+    Sigma = 1.4
+    kernelsize = (3, 3)
 
-def get_all_M_matrices(image):
-  Ixx, Ixy, Iyx, Iyy = get_covariance_matrix(image)
-  windowed_Ixx =  apply_gaussian(Ixx, 7, 1.5)[:,:,0]
-  windowed_Ixy =  apply_gaussian(Ixy, 7, 1.5)[:,:,0]
-  windowed_Iyx =  apply_gaussian(Iyx, 7, 1.5)[:,:,0]
-  windowed_Iyy =  apply_gaussian(Iyy, 7, 1.5)[:,:,0]
+    ImgX_2 = cv2.GaussianBlur(ImgX_2, kernelsize, Sigma)
+    ImgY_2 = cv2.GaussianBlur(ImgY_2, kernelsize, Sigma)
+    ImgXY = cv2.GaussianBlur(ImgXY, kernelsize, Sigma)
+    ImgYX = cv2.GaussianBlur(ImgYX, kernelsize, Sigma)
+    # print(ImgXY.shape, ImgYX.shape)
 
-  return windowed_Ixx, windowed_Ixy, windowed_Iyx, windowed_Iyy
-
-def get_responses(image):
-  windowed_Ixx, windowed_Ixy, windowed_Iyx, windowed_Iyy = get_all_M_matrices(image)
-  k = 0.04
-  responses = np.zeros((image.shape[0], image.shape[1]))
-  for i in range(image.shape[0]):
-    for j in range(image.shape[1]):
-      first = windowed_Ixx[i][j]
-      second = windowed_Ixy[i][j]
-      third = windowed_Iyx[i][j]
-      fourth = windowed_Iyy[i][j]
-
-      M_matrix_i_j = np.array([[first, second],[third, fourth]])
-      determinant = np.linalg.det(M_matrix_i_j)
-      trace = np.matrix.trace(M_matrix_i_j)
-      response_i_j = determinant - (k*(trace**2))
-      responses[i][j] = response_i_j
-
-  return responses
-
-def get_max_indices(block):
-  m = block.shape[0]
-  n = block.shape[1]
-
-  max_val = np.amin(block) - 1
-  p = -1
-  q = -1
-
-  for i in range(m):
-    for j in range(n):
-      if block[i][j] > max_val:
-        max_val = block[i][j]
-        p = i
-        q = j
-  return p, q, max_val
-
-def non_maxima_suppression(responses, window_size):
-  all_y = []
-  all_x = []
-
-  height = responses.shape[0]
-  width = responses.shape[1]
-
-  count = 0
-  for i in range(0,width-window_size+1,window_size):
-    for j in range(0,height-window_size+1,window_size):
-      current_block = responses[j:j+window_size, i:i+window_size]
-      p, q, max_val = get_max_indices(current_block)
-      if(max_val!=-1):
-        global_row = j + p
-        global_col = i + q
-        all_y.append(global_row)
-        all_x.append(global_col)
-  
-  return all_y, all_x
-
-'''if __name__ == "__main__":
-  threshold_log10 = 3
-  threshold = 10**(threshold_log10)
-  img = load_image('Q3/flower.jpg')[:,:,np.newaxis]
-  responses = get_responses(img)
-  responses = np.where(responses>threshold,responses,-1)
-  rows, cols = non_maxima_suppression(responses, 13)
-  color_img = cv2.cvtColor(img[:,:,0], cv2.COLOR_GRAY2BGR)
-
-  for each_corner in range(len(rows)):
-    cv2.circle(color_img, (cols[each_corner], rows[each_corner]), 3, (0,0,255), -1)
-  cv2.imwrite('Q3-Output/corners.jpg', color_img)'''
+    alpha = 0.06
+    R = np.zeros((w, h), np.float32)
+    # For every pixel find the corner strength
+    for row in range(w):
+        for col in range(h):
+            M_bar = np.array([[ImgX_2[row][col], ImgXY[row][col]], [ImgYX[row][col], ImgY_2[row][col]]])
+            R[row][col] = np.linalg.det(M_bar) - (alpha * np.square(np.trace(M_bar)))
+    return R

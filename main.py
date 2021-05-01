@@ -9,6 +9,7 @@ import pyqtgraph as pg
 import numpy as np
 import harris
 
+
 class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(ApplicationWindow, self).__init__()
@@ -23,28 +24,55 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
 
     def harris_operator(self):
-
         if self.ui.comboBox.currentIndex() == 1:
-            threshold_log10 = 3
-            threshold = 10**(threshold_log10)
-            #img = load_image('squares.png')[:,:,np.newaxis]
-            img = cv2.imread('squares.png')
-            responses = harris.get_responses(img)
-            responses = np.where(responses>threshold,responses,-1)
-            #rows, cols = harris.non_maxima_suppression(responses, 13)
-            harris_image = harris.non_maxima_suppression(responses, 13)
-            color_img = cv2.cvtColor(img[:,:,0], cv2.COLOR_GRAY2BGR)
-        self.my_img = pg.ImageItem(harris_image)
+            
+            #Read Image
+            firstimagename = 'squares.png'
+            
+            # Get the first image
+            firstimage = cv2.imread(firstimagename, 0)
+            w, h = firstimage.shape
+
+            # Covert image to color to draw colored circles on it
+            bgr = cv2.cvtColor(firstimage, cv2.COLOR_GRAY2RGB)
+
+            # Corner detection
+            harris_output = harris.HarrisCornerDetection(firstimage)
+
+            #Parameter
+
+            CornerStrengthThreshold = 500
+
+            # Plot detected corners on image
+            radius = 1
+            color = (0, 255, 0)
+            thickness = 1
+
+            PointList = []
+            # Look for Corner strengths above the threshold
+            for row in range(w):
+                for col in range(h):
+                    if harris_output[row][col] > CornerStrengthThreshold:
+                        # print(R[row][col])
+                        max = harris_output[row][col]
+
+                        # Local non-maxima suppression
+                        skip = False
+                        for nrow in range(5):
+                            for ncol in range(5):
+                                if row + nrow - 2 < w and col + ncol - 2 < h:
+                                    if harris_output[row + nrow - 2][col + ncol - 2] > max:
+                                        skip = True
+                                        break
+
+                        if not skip:
+                            # Point is expressed in x, y which is col, row
+                            cv2.circle(bgr, (col, row), radius, color, thickness)
+                            PointList.append((row, col))
+
+        self.my_img = pg.ImageItem(harris_output)
         self.ui.image.addItem(self.my_img)
         
-
-                #for each_corner in range(len(rows)):
-                 #   cv2.circle(color_img, (cols[each_corner], rows[each_corner]), 3, (0,0,255), -1)
-                #cv2.imwrite('Q3-Output/corners.jpg', color_img)
-
-
-    
-
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

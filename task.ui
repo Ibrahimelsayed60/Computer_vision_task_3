@@ -89,14 +89,20 @@
                <property name="frameShadow">
                 <enum>QFrame::Raised</enum>
                </property>
-               <widget class="QWidget" name="image" native="true">
+               <widget class="PlotWidget" name="image" native="true">
                 <property name="geometry">
                  <rect>
-                  <x>9</x>
+                  <x>4</x>
                   <y>10</y>
-                  <width>351</width>
+                  <width>361</width>
                   <height>281</height>
                  </rect>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>475</width>
+                  <height>16777215</height>
+                 </size>
                 </property>
                </widget>
               </widget>
@@ -199,6 +205,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
