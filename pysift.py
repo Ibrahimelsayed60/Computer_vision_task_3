@@ -51,7 +51,7 @@ def SIFT_matching_keypoint(image1,image2):
         nWidth = w1 + w2
         nHeight = max(h1, h2)
         hdif = int((h2 - h1) / 2)
-        newimg = np.zeros((nHeight, nWidth, 3), np.uint8)
+        newimg = np.zeros((nHeight + 20, nWidth, 3), np.uint8)
 
         for i in range(3):
             newimg[hdif:hdif + h1, :w1, i] = image1

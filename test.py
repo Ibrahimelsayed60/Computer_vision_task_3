@@ -7,8 +7,8 @@ import logging
 
 MIN_MATCH_COUNT = 7
 
-img1 = cv2.imread('box.png', 0)           # queryImage
-img2 = cv2.imread('box_in_scene.png', 0)  # trainImage
+img1 = cv2.imread('SIFT_images/book.png', 0)           # queryImage
+img2 = cv2.imread('SIFT_images/book_in_scence.png', 0)  # trainImage
 
 newimage = pysift.SIFT_matching_keypoint(img1, img2)
 #newimage = pysift.featured_image(img1)
