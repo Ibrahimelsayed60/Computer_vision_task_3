@@ -21,8 +21,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         path = 'squares.png'
         self.img = cv2.imread(path, 0)
-        self.image1 =  cv2.rotate(cv2.imread('box.png',0),cv2.ROTATE_90_CLOCKWISE)
-        self.image2 = cv2.rotate(cv2.imread('box_in_scene.png',0),cv2.ROTATE_90_CLOCKWISE)
+        self.image1 =  cv2.rotate(cv2.imread('SIFT_images/box.png',0),cv2.ROTATE_90_CLOCKWISE)
+        self.image2 = cv2.rotate(cv2.imread('SIFT_images/box_in_scene.png',0),cv2.ROTATE_90_CLOCKWISE)
         
         self.ui.original.setPixmap(QPixmap(path))
         self.ui.comboBox.currentIndexChanged[int].connect(self.harris_operator)
