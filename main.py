@@ -45,7 +45,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             CornerStrengthThreshold = 5
 
             # Plot detected corners on image
-            radius = 1
+            radius = 3
             color = (255, 255, 255) #white
             thickness = 1
             PointList = []
