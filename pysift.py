@@ -16,7 +16,8 @@ def SIFT_matching_keypoint(image1,image2):
     
     kp1, des1 = computeKeypointsAndDescriptors(image1)
     kp2, des2 = computeKeypointsAndDescriptors(image2)
-
+    print(kp1)
+    print(des1)
     # Initialize and use FLANN
     FLANN_INDEX_KDTREE = 0
     index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 5)

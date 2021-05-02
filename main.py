@@ -11,7 +11,7 @@ import harris
 import time
 import pyqtgraph as pg
 import pysift
-
+import features_matching
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -23,18 +23,43 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.img = cv2.imread(path, 0)
         self.image1 =  cv2.rotate(cv2.imread('SIFT_images/box.png',0),cv2.ROTATE_90_CLOCKWISE)
         self.image2 = cv2.rotate(cv2.imread('SIFT_images/box_in_scene.png',0),cv2.ROTATE_90_CLOCKWISE)
+        self.image3 = cv2.rotate(cv2.imread('book.jpg', 0),cv2.ROTATE_90_CLOCKWISE )
+        self.image4 = cv2.rotate(cv2.imread('table.jpg', 0),cv2.ROTATE_90_CLOCKWISE )
         
         self.ui.original.setPixmap(QPixmap(path))
+        self.ui.comboBox_2.currentIndexChanged[int].connect(self.Features_Matching)
         self.ui.comboBox.currentIndexChanged[int].connect(self.harris_operator)
 
         self.ui.widget_2.getPlotItem().hideAxis('bottom')
         self.ui.widget_2.getPlotItem().hideAxis('left')
         self.ui.widget_3.getPlotItem().hideAxis('bottom')
         self.ui.widget_3.getPlotItem().hideAxis('left')
+        self.ui.widget.getPlotItem().hideAxis('bottom')
+        self.ui.widget.getPlotItem().hideAxis('left')
 
         self.ui.pushButton_2.clicked.connect(self.featured_result_image)
         self.ui.pushButton_1.clicked.connect(self.matching_image)
 
+    def Features_Matching(self):
+        if self.ui.comboBox_2.currentIndex() == 0:
+            self.ui.widget.clear()
+        else:
+            sift = cv2.xfeatures2d.SIFT_create()
+            keypoints_1, descriptors_1 = sift.detectAndCompute(self.image3,None)
+            keypoints_2, descriptors_2 = sift.detectAndCompute(self.image4,None)
+            # keypoints_1, descriptors_1 = pysift.computeKeypointsAndDescriptors(self.image3)
+            # keypoints_2, descriptors_2 = pysift.computeKeypointsAndDescriptors(self.image4)
+            t0= time.process_time()
+            if self.ui.comboBox_2.currentIndex() == 1:
+                matching, trainIdx = features_matching.SSD(descriptors_1, descriptors_2)
+            if self.ui.comboBox_2.currentIndex() == 2:
+                matching, trainIdx = features_matching.NCC(descriptors_1, descriptors_2)
+            newimg = features_matching.get_matching_image(self.image3, self.image4, keypoints_1, keypoints_2, trainIdx)
+            img = pg.ImageItem(newimg)
+            self.ui.widget.addItem(img)
+            t1 = time.process_time() - t0
+            self.ui.widget.setTitle("Computation time = {}".format(t1))
+            print("Computation time: ", t1)
 
     def harris_operator(self):
         t0= time.process_time()
@@ -84,7 +109,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print("Computation time: ", t1)
         self.my_img = pg.ImageItem(harris_output)
         self.ui.image.addItem(self.my_img)
-        
+        self.ui.image.setTitle("Computation time = {}".format(t1))        
 
     def featured_result_image(self):
         newimage = pysift.featured_image(self.image1)

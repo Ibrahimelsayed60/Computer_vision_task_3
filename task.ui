@@ -14,167 +14,109 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>Harris operator</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QFrame" name="frame_3">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QFrame" name="frame">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QFrame" name="frame_6">
+          <widget class="QLabel" name="original">
            <property name="geometry">
             <rect>
-             <x>20</x>
+             <x>0</x>
              <y>20</y>
-             <width>981</width>
-             <height>591</height>
+             <width>554</width>
+             <height>531</height>
             </rect>
            </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
+           <property name="maximumSize">
+            <size>
+             <width>1000</width>
+             <height>1000</height>
+            </size>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+           <property name="text">
+            <string/>
            </property>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>130</y>
-              <width>781</width>
-              <height>381</height>
-             </rect>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QFrame" name="frame_4">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="original">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>381</width>
-                  <height>381</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="frame_5">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="PlotWidget" name="image" native="true">
-                <property name="geometry">
-                 <rect>
-                  <x>-56</x>
-                  <y>-20</y>
-                  <width>461</width>
-                  <height>441</height>
-                 </rect>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>475</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-               </widget>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="layoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>90</y>
-              <width>781</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QFrame" name="frame">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="label_2">
-                <property name="geometry">
-                 <rect>
-                  <x>150</x>
-                  <y>10</y>
-                  <width>101</width>
-                  <height>17</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>Original image</string>
-                </property>
-               </widget>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="frame_2">
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QComboBox" name="comboBox">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>4</y>
-                  <width>371</width>
-                  <height>31</height>
-                 </rect>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>Apply</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Harris Operator</string>
-                 </property>
-                </item>
-               </widget>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
           </widget>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QFrame" name="frame_2">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="PlotWidget" name="image" native="true">
+           <property name="geometry">
+            <rect>
+             <x>-10</x>
+             <y>10</y>
+             <width>553</width>
+             <height>551</height>
+            </rect>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1000</width>
+             <height>1000</height>
+            </size>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Original Image</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBox">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>10</width>
+            <height>4</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>Apply</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Harris Operator</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -183,83 +125,124 @@
        <attribute name="title">
         <string>SIFT</string>
        </attribute>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>22</x>
-          <y>30</y>
-          <width>1061</width>
-          <height>551</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,5">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="3,0">
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Featured image</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_2">
-               <property name="text">
-                <string>play</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="PlotWidget" name="widget_3" native="true"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,0">
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Matching image</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_1">
-               <property name="text">
-                <string>play</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="PlotWidget" name="widget_2" native="true"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,5">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="3,0">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Featured image</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="text">
+                 <string>play</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="PlotWidget" name="widget_3" native="true"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,0">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Matching image</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_1">
+                <property name="text">
+                 <string>play</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="PlotWidget" name="widget_2" native="true"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>SSD</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <pointsize>18</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Features Matching</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBox_2">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>Choose Matching Method</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Sum of squared differences (SSD)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Normalized Cross Correlations</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="PlotWidget" name="widget" native="true"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -281,7 +264,7 @@
   <customwidget>
    <class>PlotWidget</class>
    <extends>QWidget</extends>
-   <header>pyqtgraph</header>
+   <header location="global">pyqtgraph</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
