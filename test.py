@@ -5,15 +5,23 @@ from matplotlib import pyplot as plt
 import logging
 #logger = logging.getLogger(__name__)
 
-MIN_MATCH_COUNT = 7
+# MIN_MATCH_COUNT = 7
 
-img1 = cv2.imread('SIFT_images/book.png', 0)           # queryImage
-img2 = cv2.imread('SIFT_images/book_in_scence.png', 0)  # trainImage
+# img1 = cv2.imread('SIFT_images/book.png', 0)           # queryImage
+# img2 = cv2.imread('SIFT_images/book_in_scence.png', 0)  # trainImage
 
-newimage = pysift.SIFT_matching_keypoint(img1, img2)
-#newimage = pysift.featured_image(img1)
-plt.imshow(newimage)
-plt.show()
+# kp1, des1 = pysift.computeKeypointsAndDescriptors(img1) 
+# hist,bin_edges = np.histogram()
+
+# plt.figure(figsize=[10,8])
+
+# plt.bar(bin_edges[:-1], hist, width = 0.5, color='#0504aa',alpha=0.7)
+# plt.show()
+
+for i in range(-3,4,1):
+    print(i)
+
+
 
 # # Compute SIFT keypoints and descriptors
 # kp1, des1 = pysift.computeKeypointsAndDescriptors(img1)

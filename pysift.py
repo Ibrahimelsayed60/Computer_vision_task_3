@@ -128,16 +128,7 @@ def generateGaussianImages(image, num_octaves, gaussian_kernels):
         base_of_octave = gaussian_images_octave[-3]
         image = resize(base_of_octave,(int(base_of_octave.shape[1]/2), int(base_of_octave.shape[0]/2)),INTER_NEAREST) 
     return array(gaussian_images,dtype=object)
-    # for octave_index in range(num_octaves):
-    #     gaussian_images_in_octave = []
-    #     gaussian_images_in_octave.append(image)  # first image in octave already has the correct blur
-    #     for gaussian_kernel in gaussian_kernels[1:]:
-    #         image = GaussianBlur(image, (0, 0), sigmaX=gaussian_kernel, sigmaY=gaussian_kernel)
-    #         gaussian_images_in_octave.append(image)
-    #     gaussian_images.append(gaussian_images_in_octave)
-    #     octave_base = gaussian_images_in_octave[-3]
-    #     image = resize(octave_base, (int(octave_base.shape[1] / 2), int(octave_base.shape[0] / 2)), interpolation=INTER_NEAREST)
-    # return array(gaussian_images, dtype=object)
+    
 
 def generateDoGImages(gaussian_images):
 

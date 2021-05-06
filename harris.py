@@ -67,3 +67,51 @@ def HarrisCornerDetection(image):
             M_bar = np.array([[ImgX_2[row][col], ImgXY[row][col]], [ImgYX[row][col], ImgY_2[row][col]]])
             R[row][col] = np.linalg.det(M_bar) - (alpha * np.square(np.trace(M_bar)))
     return R
+
+
+
+def keypoint_harris(img):
+    #firstimagename = cv2.imread("YourFileName.png")
+
+    # Get the first image
+    #firstimage = cv2.imread(img, cv2.IMREAD_GRAYSCALE)
+    w, h = img.shape
+
+    # Covert image to color to draw colored circles on it
+    bgr = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+
+    # Corner detection
+    R = HarrisCornerDetection(img)
+
+    # Empirical Parameter
+    # This parameter will need tuning based on the use-case
+    CornerStrengthThreshold = 5
+
+    # Plot detected corners on image
+    radius = 1
+    color = (0, 255, 0)  # Green
+    thickness = 1
+
+    PointList = []
+    # Look for Corner strengths above the threshold
+    for row in range(w):
+        for col in range(h):
+            if R[row][col] > CornerStrengthThreshold:
+                # print(R[row][col])
+                max = R[row][col]
+
+                # Local non-maxima suppression
+                skip = False
+                for nrow in range(5):
+                    for ncol in range(5):
+                        if row + nrow - 2 < w and col + ncol - 2 < h:
+                            if R[row + nrow - 2][col + ncol - 2] > max:
+                                skip = True
+                                break
+
+                if not skip:
+                    # Point is expressed in x, y which is col, row
+                    cv2.circle(bgr, (col, row), radius, color, thickness)
+                    PointList.append((row, col))
+
+    return PointList

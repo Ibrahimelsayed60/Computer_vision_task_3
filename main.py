@@ -12,6 +12,7 @@ import time
 import pyqtgraph as pg
 import pysift
 import features_matching
+import SIFT_Descriptor
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -112,6 +113,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.image.setTitle("Computation time = {}".format(t1))        
 
     def featured_result_image(self):
+        #newimage = SIFT_Descriptor.featured_image(self.image1)
         newimage = pysift.featured_image(self.image1)
         img = pg.ImageItem(newimage)
         self.ui.widget_3.addItem(img)
