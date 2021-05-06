@@ -23,7 +23,7 @@
 <img  src="squares.png">
 
 ## Ouptut
-<img  src="harris.png">
+<img  src="harris.jpg">
 
 ### Computation time for detecting these points:  
 29.53090317 sec
