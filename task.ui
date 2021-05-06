@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -125,72 +125,44 @@
        <attribute name="title">
         <string>SIFT</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,5">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="3,0">
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Featured image</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_2">
-                <property name="text">
-                 <string>play</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="PlotWidget" name="widget_3" native="true"/>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,0">
-              <item>
-               <widget class="QLabel" name="label_3">
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Matching image</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_1">
-                <property name="text">
-                 <string>play</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="PlotWidget" name="widget_2" native="true"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
+       <widget class="QWidget" name="">
+        <property name="geometry">
+         <rect>
+          <x>122</x>
+          <y>12</y>
+          <width>871</width>
+          <height>551</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,5">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="3,0">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>SIFT Featured image</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="text">
+              <string>play</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="PlotWidget" name="widget_3" native="true"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -240,7 +212,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="2">
-         <widget class="PlotWidget" name="widget" native="true"/>
+         <widget class="PlotWidget" name="widget_2" native="true"/>
         </item>
        </layout>
       </widget>

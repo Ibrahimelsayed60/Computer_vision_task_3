@@ -36,6 +36,32 @@ def gaussian_filter(shape,sigma):
     return h
 
 
+def descriptor_result(keypoints,image,num_region=4, bins_num = 8 ):
+    descriptors = []
+    sigma = 1.5
+    g_kernel = gaussian_filter((16,16), sigma)
+    for keys in keypoints:
+        x = int(keys[0])
+        y = int(keys[1])
+        angle = keys[2]
+        sub_image = image[x-8:x+8,y-8:y+8]
+        magnitude , phase = sobel_edge_of_image(sub_image)
+        weighted_image = magnitude * g_kernel
+        phase = (((phase - angle)%360)*bins_num/360.).astype(int)
+        features = []
+        for sub_i in range(num_region):
+            for sub_j in range(num_region):
+                sub_weights = weighted_image[sub_i*4:(sub_i+1)*4, sub_j*4: (sub_j+1)*4]
+                sub_dir_idx = phase[sub_i*4:(sub_i+1)*4,sub_j*4:(sub_j+1)*4]
+                hist = np.zeros(bins_num,dtype=np.float32)
+                for bin_idx in range(bins_num):
+                    hist[bin_idx] = np.sum(sub_weights[sub_dir_idx == bin_idx])
+                features.extend(hist.tolist())
+        features /= (np.linalg.norm(np.array(features)))
+        features = np.clip(features, np.finfo(np.float16).eps, 0.2)
+        features /= (np.linalg.norm(features))
+        descriptors.append(features)
+    return descriptors
 
 # Descriptor Generation
 def feature_descriptor(kepy_points, img, time_start, num_subregion=4, num_bin=8):
@@ -138,17 +164,18 @@ def featured_image(image):
 
 
 # tests
-img = cv2.imread('Cow.png', cv2.IMREAD_GRAYSCALE)
+# img = cv2.imread('Cow.png', cv2.IMREAD_GRAYSCALE)
 
-# R = HC.HarrisCornerDetection(img)
-R = harris.HarrisCornerDetection(img)
-kps = orientation_keypoints(R, img)
+# # R = HC.HarrisCornerDetection(img)
+# R = harris.HarrisCornerDetection(img)
+# kps = orientation_keypoints(R, img)
 
-new_image = featured_image(img)
+# #new_image = featured_image(img)
 
-plt.figure(figsize=(20,20))
-plt.imshow(new_image)
+# # plt.figure(figsize=(20,20))
+# # plt.imshow(new_image)
 
-# desc = feature_descriptor(kps, img, time_start)
-print(kps)
+# desc = descriptor_result(kps, img)
+# print(kps)
+# print(desc)
 

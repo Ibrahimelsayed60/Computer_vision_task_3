@@ -35,11 +35,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.widget_2.getPlotItem().hideAxis('left')
         self.ui.widget_3.getPlotItem().hideAxis('bottom')
         self.ui.widget_3.getPlotItem().hideAxis('left')
-        self.ui.widget.getPlotItem().hideAxis('bottom')
-        self.ui.widget.getPlotItem().hideAxis('left')
+        # self.ui.widget.getPlotItem().hideAxis('bottom')
+        # self.ui.widget.getPlotItem().hideAxis('left')
 
         self.ui.pushButton_2.clicked.connect(self.featured_result_image)
-        self.ui.pushButton_1.clicked.connect(self.matching_image)
+        #self.ui.pushButton_1.clicked.connect(self.matching_image)
 
     def Features_Matching(self):
         if self.ui.comboBox_2.currentIndex() == 0:
@@ -57,9 +57,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 matching, trainIdx = features_matching.NCC(descriptors_1, descriptors_2)
             newimg = features_matching.get_matching_image(self.image3, self.image4, keypoints_1, keypoints_2, trainIdx)
             img = pg.ImageItem(newimg)
-            self.ui.widget.addItem(img)
+            self.ui.widget_2.addItem(img)
             t1 = time.process_time() - t0
-            self.ui.widget.setTitle("Computation time = {}".format(t1))
+            self.ui.widget_2.setTitle("Computation time = {}".format(t1))
             print("Computation time: ", t1)
 
     def harris_operator(self):
@@ -118,10 +118,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         img = pg.ImageItem(newimage)
         self.ui.widget_3.addItem(img)
 
-    def matching_image(self):
-        newimage = pysift.SIFT_matching_keypoint(self.image1,self.image2)
-        img = pg.ImageItem(newimage)
-        self.ui.widget_2.addItem(img)
+    # def matching_image(self):
+    #     newimage = pysift.SIFT_matching_keypoint(self.image1,self.image2)
+    #     img = pg.ImageItem(newimage)
+    #     self.ui.widget_2.addItem(img)
 
 
 
